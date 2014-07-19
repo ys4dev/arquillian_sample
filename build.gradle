@@ -31,4 +31,5 @@ dependencies {
 
 findbugs {
     toolVersion = "3.0.0"
+    ignoreFailures = true
 }
