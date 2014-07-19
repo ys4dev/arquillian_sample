@@ -40,13 +40,15 @@ public class AjaxServlet extends HttpServlet {
         StringWriter writer = new StringWriter();
         JsonGenerator generator = Json.createGenerator(writer).writeStartArray();
 
-        try (Connection con = dataSource.getConnection()) {
-            PreparedStatement pstmt = con.prepareStatement("select with_index from index_sample1 where with_index like ? limit 10");
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement pstmt = con.prepareStatement("select with_index from index_sample1 where with_index like ? limit 10")
+        ) {
             pstmt.setString(1, name + "%");
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                String withIndex = rs.getString(1);
-                generator.write(withIndex);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String withIndex = rs.getString(1);
+                    generator.write(withIndex);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
