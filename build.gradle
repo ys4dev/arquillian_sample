@@ -10,6 +10,8 @@
 apply plugin: 'war'
 apply plugin: 'idea'
 apply plugin: 'findbugs'
+apply plugin: 'pmd'
+apply plugin: 'jacoco'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -32,4 +34,15 @@ dependencies {
 findbugs {
     toolVersion = "3.0.0"
     ignoreFailures = true
+}
+
+pmd {
+    ignoreFailures = true
+}
+
+test {
+    jacoco {
+        enabled = true
+        destinationFile = file('build/reports/jacoco/jacoco.exec')
+    }
 }
