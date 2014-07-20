@@ -20,10 +20,6 @@ public class ChatEndpoint {
 
     Map<Session, User> sessions = new HashMap<>();
 
-    public ChatEndpoint() {
-        System.out.printf("new endpoint");
-    }
-
     @OnOpen
     public void onOpen(Session session) {
         sessions.put(session, null);
