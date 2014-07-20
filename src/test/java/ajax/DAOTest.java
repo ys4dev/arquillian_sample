@@ -5,10 +5,13 @@ import org.junit.Assert;
 import org.h2.jdbcx.JdbcDataSource;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Mockito.*;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,5 +74,30 @@ public class DAOTest {
     public void testSelectEmpty() {
         List<String> candidates = dao.searchCandidate("か");
         Assert.assertEquals(Arrays.asList(), candidates);
+    }
+
+    @Test
+    public void testConnectionFail() throws Exception {
+        DataSource ds = mock(DataSource.class);
+        when(ds.getConnection()).thenThrow(new SQLException());
+        dao.dataSource = ds;
+
+        List<String> result = dao.searchCandidate(null);
+        Assert.assertEquals(Arrays.asList(), result);
+    }
+
+    @Test
+    public void testQueryFailure() throws Exception {
+        DataSource ds = mock(DataSource.class);
+        Connection conn = mock(Connection.class);
+        PreparedStatement stmt = mock(PreparedStatement.class);
+        when(ds.getConnection()).thenReturn(conn);
+        when(conn.prepareStatement(any())).thenReturn(stmt);
+        when(stmt.executeQuery()).thenThrow(new SQLException());
+
+        dao.dataSource = ds;
+
+        List<String> result = dao.searchCandidate(null);
+        Assert.assertEquals(Arrays.asList(), result);
     }
 }
