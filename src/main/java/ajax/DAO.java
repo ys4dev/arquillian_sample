@@ -27,7 +27,7 @@ import java.util.List;
 @RequestScoped
 public class DAO {
     @Resource(name = "ann-index-sample")
-    private DataSource dataSource;
+    DataSource dataSource;
 
     public List<String> searchCandidate(String hint) {
         List<String> result = new ArrayList<>();
