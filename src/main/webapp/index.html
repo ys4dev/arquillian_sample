@@ -1,16 +1,18 @@
 <html>
 <head>
     <title>ajax sample</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
 <body>
+Ajaxサンプル
 <input type="text" id="name">
 <div id="candidate"></div>
 <script src="jquery-2.1.1.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
     $("#name").keyup(function() {
-                $.get('ajax', {name:$(this).val()}).then(function(data){
+                $.ajax({url:'ajax', type:"POST", data: {name:$(this).val()}}).then(function(data){
                     console.log(data);
                     var $candidate = $("#candidate").empty();
                     data.forEach(function(candidate){
