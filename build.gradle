@@ -11,6 +11,7 @@ apply plugin: 'war'
 apply plugin: 'idea'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
+apply plugin: 'cpd'
 apply plugin: 'jacoco'
 
 // In this section you declare where to find the dependencies of your project
@@ -18,6 +19,16 @@ repositories {
     // Use 'maven central' for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     mavenCentral()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'de.aaschmid.gradle.plugins:gradle-cpd-plugin:0.1'
+    }
 }
 
 // In this section you declare the dependencies for your production and test code
@@ -38,6 +49,18 @@ findbugs {
 
 pmd {
     ignoreFailures = true
+}
+
+cpd {
+
+}
+
+tasks.cpd {
+    reports {
+        text.enabled = false
+        xml.enabled = true
+    }
+    source = files('src/main/java')
 }
 
 test {
