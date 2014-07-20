@@ -2,17 +2,16 @@ package websocket;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.jsontype.impl.AsPropertyTypeDeserializer;
 
 /**
  * Created by sakura on 2014/07/19.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(name = "hello", value = Hello.class),
-        @JsonSubTypes.Type(name = "say", value = Say.class)
+        @JsonSubTypes.Type(name = Hello.TYPE, value = Hello.class),
+        @JsonSubTypes.Type(name = Talk.TYPE, value = Talk.class),
+        @JsonSubTypes.Type(name = ServerHello.TYPE, value = ServerHello.class)
 })
-public interface Message {
-
+public abstract class Message {
+    //public abstract String getType();
 }

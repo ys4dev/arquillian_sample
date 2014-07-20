@@ -1,7 +1,7 @@
 package websocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -15,17 +15,27 @@ public class MessageTest {
     public void testDeserializeHello() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue("{\"name\":\"test\", \"type\":\"hello\"}", Message.class);
-        Assert.assertEquals(Hello.class, message.getClass());
+        assertEquals(Hello.class, message.getClass());
         Hello hello = (Hello)message;
-        Assert.assertEquals("test", hello.getName());
+        assertEquals("test", hello.getName());
     }
 
     @Test
-    public void testDeserializeSay() throws IOException {
+    public void testDeserializeTalk() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        Message message = mapper.readValue("{\"text\":\"message\", \"type\":\"say\"}", Message.class);
-        Assert.assertEquals(Say.class, message.getClass());
-        Say say = (Say)message;
-        Assert.assertEquals("message", say.getText());
+        Message message = mapper.readValue("{\"text\":\"message\", \"type\":\"talk\", \"from\":\"user name\"}", Message.class);
+        assertEquals(Talk.class, message.getClass());
+        Talk talk = (Talk)message;
+        assertEquals("message", talk.getText());
+    }
+
+    @Test
+    public void testServerHello() throws Exception {
+        ServerHello hello = new ServerHello();
+        hello.setName("new name");
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(mapper.writeValueAsString(hello), Message.class);
+        ServerHello hello2 = (ServerHello)message;
+        assertEquals("new name", hello2.getName());
     }
 }

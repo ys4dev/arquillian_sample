@@ -3,9 +3,9 @@ package websocket;
 /**
  * Created by sakura on 2014/07/20.
  */
-public class Hello extends Message {
+public class ServerHello extends Message {
 
-    public static final String TYPE = "hello";
+    public static final String TYPE = "serverHello";
 
     private String name;
 

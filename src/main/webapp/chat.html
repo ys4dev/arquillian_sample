@@ -1,0 +1,69 @@
+<html>
+<head>
+    <title>websocket chat sample</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+<body>
+<div id="history"></div>
+<input type="text" id="name">
+<input type="text" id="message">
+<button id="button">connect</button>
+<script src="jquery-2.1.1.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    (function() {
+        "use strict";
+
+        var $button = $("#button"),
+                $history = $("#history"),
+                $name = $("#name"),
+                $message = $("#message"),
+                ws = null;
+
+        function connect(event) {
+            console.log("button");
+            ws = new WebSocket("ws://localhost:8080/ajax_servlet_Web_exploded/chat");
+            ws.onopen = onOpen;
+            ws.onmessage = onMessage;
+        }
+
+        function sendMessage() {
+            ws.send(JSON.stringify({type:"talk", text:$message.val()}));
+        }
+
+        function onOpen(event) {
+            var message = JSON.stringify({type: "hello", name: $("#name").val()});
+            console.log(message);
+            ws.send(message);
+        }
+
+        function onMessage(event) {
+            console.log(event.data);
+            var data = JSON.parse(event.data);
+            switch (data.type) {
+                case "serverHello":
+                    $button.text("send");
+                    $name.val(data.name);
+                    $name.attr('readonly', true);
+                    $button.off('click');
+                    $button.click(sendMessage);
+                    appendMessage({name: "server", text: "welcome"});
+                    break;
+                case "talk":
+                    appendMessage(data);
+                    break;
+            }
+        }
+
+        function appendMessage(data) {
+            var $div = $("<div>");
+            $div.text(data.text);
+            $history.append($div);
+        }
+
+        $button.click(connect);
+
+    })();
+</script>
+</body>
+</html>

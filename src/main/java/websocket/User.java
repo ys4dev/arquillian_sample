@@ -3,10 +3,7 @@ package websocket;
 /**
  * Created by sakura on 2014/07/20.
  */
-public class Hello extends Message {
-
-    public static final String TYPE = "hello";
-
+public class User {
     private String name;
 
     public String getName() {
