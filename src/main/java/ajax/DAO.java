@@ -1,6 +1,7 @@
 package ajax;
 
 import javax.annotation.Resource;
+import javax.annotation.sql.DataSourceDefinition;
 import javax.enterprise.context.RequestScoped;
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -13,9 +14,19 @@ import java.util.List;
 /**
  * Created by sakura on 2014/07/20.
  */
+@DataSourceDefinition(
+        name = "java:comp/env/ann-index-sample",
+        minPoolSize = 4,
+        initialPoolSize = 4,
+        className = "org.mariadb.jdbc.MySQLDataSource",
+        user = "index_sample",
+        password = "index_sample",
+        databaseName = "index_sample",
+        serverName = "192.168.1.15"
+)
 @RequestScoped
 public class DAO {
-    @Resource(lookup="jdbc/index_sample")
+    @Resource(name = "ann-index-sample")
     private DataSource dataSource;
 
     public List<String> searchCandidate(String hint) {
