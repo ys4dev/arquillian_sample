@@ -1,0 +1,9 @@
+<arquillian>
+
+    <!-- clip -->
+    <extension qualifier="webdriver">
+        <property name="browser">firefox</property>
+    </extension>
+    <!-- clip -->
+
+</arquillian>
